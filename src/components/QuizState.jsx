@@ -116,13 +116,13 @@ const QuizState = ({ handleCurrentState, question, quizData, setQuizData, questi
                     choosedOptId={userAns}
                     correctOptId={question.ansIndex}
                 />
-            </div>
 
-            <p
-                className={`next ${timeWarning.halfTime ? "golden-text" : ""} ${timeWarning.oneSixthTime ? "red-text" : ""}`}
-                onClick={handleNext}>
-                {quizData.currentQuesNo < questionsLength - 1 ? "Next" : "Submit"} &gt;
-            </p>
+                <p
+                    className={`next ${timeWarning.halfTime ? "golden-text" : ""} ${timeWarning.oneSixthTime ? "red-text" : ""}`}
+                    onClick={handleNext}>
+                    {quizData.currentQuesNo < questionsLength - 1 ? "Next" : "Submit"} &gt;
+                </p>
+            </div>
         </div>
     )
 }
