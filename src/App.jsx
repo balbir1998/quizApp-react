@@ -15,6 +15,7 @@ function App() {
     questionAttempt: false,
     isMute: true,
     highScore: 0,
+    isResultState: false
   });
 
   return (
@@ -24,6 +25,8 @@ function App() {
           currentState === "home" &&
           <Home
             handleCurrentState={setCurrentState}
+            highScore={quizData.highScore}
+            questionLength={questionsList.length}
           />
         }
         {
