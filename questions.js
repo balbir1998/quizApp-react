@@ -150,7 +150,6 @@ const questions = [
         ansIndex: 1,
         duration: { minute: 0, second: 45 }
     }
-
 ];
 
 export default questions;
