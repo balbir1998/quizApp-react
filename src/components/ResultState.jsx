@@ -3,13 +3,25 @@ import linkedin from "../assets/linkedin.svg";
 import twitter from "../assets/twitter.svg";
 import instagram from "../assets/instagram.svg";
 import { useEffect, useState } from "react";
+import ResultProgressBar from "./ResultProgressBar";
 
 
 const ResultState = ({ questionLength, quizData, setQuizData, handleCurrentState }) => {
     const [result, setResult] = useState({});
 
+    function handleRetry() {
+        setQuizData(prevState => ({ ...prevState, isResultState: false }));
+        handleCurrentState("quiz-state");
+        setResult({});
+    }
+
     useEffect(() => {
-        const score = quizData.score;
+        if (quizData.isResultState) {
+            setQuizData(prevState => ({ ...prevState, isResultState: false }));
+            handleCurrentState("home");
+            setResult({});
+            return;
+        }
         const percentage = parseInt(quizData.score / questionLength * 100)
         let quote = null;
         if (percentage >= 70) {
@@ -23,26 +35,10 @@ const ResultState = ({ questionLength, quizData, setQuizData, handleCurrentState
         } else {
             quote = "“You need to work hard”";
         }
-
-        setResult(prevState => ({ ...prevState, percentage, quote, score }));
-
-        let cubicDegree = 360 - (percentage / 100 * 360);
-        let degree = 360;
-        if (degree === cubicDegree) {
-            setResult(prevState => ({ ...prevState, degree }));
-        } else {
-            const id = setInterval(() => {
-                degree--;
-                if (degree < cubicDegree) {
-                    clearInterval(id);
-                    return;
-                };
-                setResult(prevState => ({ ...prevState, degree }));
-            }, 5)
-        }
+        setResult(prevState => ({ ...prevState, percentage, quote }));
 
         setQuizData(prevState => {
-            const newData = { ...prevState, currentQuesNo: 0 };
+            const newData = { ...prevState, currentQuesNo: 0, isResultState: true };
             if (newData.highScore < newData.score) newData.highScore = newData.score;
             newData.score = 0;
             return newData;
@@ -56,23 +52,18 @@ const ResultState = ({ questionLength, quizData, setQuizData, handleCurrentState
                         <img src={Group4svg} alt="image" />
                         <h2>Result</h2>
                     </div>
-                    <div
-                        className="final-result"
-                        style={{
-                            backgroundImage: `conic-gradient(from 20deg, #FF7A7A ${result.degree}deg, #35BD3A 0deg)`
-                        }}
-                    >
-                        <div className="attempted-questions" >
-                            {result.score < 10 ? `0${result.score}` : result.score}
-                            /{questionLength < 10 ? `0${questionLength}` : questionLength}
-                        </div>
-                    </div>
+
+                    <ResultProgressBar
+                        quizData={quizData}
+                        questionLength={questionLength}
+                    />
+
                     <div className="percentage" >
                         {result.percentage}%
                     </div>
                     <p className="quote" >{result.quote}</p>
                 </div>
-                <button className="retry-btn" onClick={() => handleCurrentState("quiz-state")}>&lt; &lt; &lt; Retry</button>
+                <button className="retry-btn" onClick={handleRetry}>&lt; &lt; &lt; Retry</button>
                 <div className="social-links">
                     <p>Share Your Score:</p>
                     <div className="icons">
