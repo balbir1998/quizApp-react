@@ -1,7 +1,6 @@
-import { useState } from "react";
 import Group4svg from "../assets/Group_4.svg";
 
-const Home = ({ handleCurrentState }) => {
+const Home = ({ highScore, questionLength, handleCurrentState }) => {
     return (
         <div className="initial-state">
             <div className="state-content">
@@ -13,7 +12,14 @@ const Home = ({ handleCurrentState }) => {
                     onClick={() => handleCurrentState("quiz-state")}
                 >
                     Start Now &gt; &gt; &gt;</button>
-                <p className="highest-score" />
+                {
+                    highScore !== 0 &&
+                    <p className="highest-score" >
+                        Highest Score:
+                        {highScore < 10 ? `0${highScore}` : highScore} /
+                        {questionLength < 10 ? `0${questionLength}` : questionLength}
+                    </p>
+                }
             </div>
         </div>
     )
